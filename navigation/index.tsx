@@ -32,12 +32,6 @@ function RootNavigator() {
     return (
       <Stack.Navigator>
         <Stack.Screen
-          name="Send"
-          component={SendScreen}
-          options={{ headerShown: false }}
-        />
-
-        <Stack.Screen
           name="Dashboard"
           component={DashboardScreen}
           options={{ headerShown: false }}
@@ -45,6 +39,11 @@ function RootNavigator() {
         <Stack.Screen
           name="Receive"
           component={ReceiveScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Send"
+          component={SendScreen}
           options={{ headerShown: false }}
         />
         <Stack.Screen
