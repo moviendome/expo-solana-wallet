@@ -59,14 +59,12 @@ const publicKeyFromString = (publicKeyString: string) => {
 };
 
 const transaction = async (from, to, amount) => {
-  const account = accountFromSeed(from.seed);
-
   console.log("Executing transaction...");
   console.log(amount);
 
   const transaction = new solanaWeb3.Transaction().add(
     solanaWeb3.SystemProgram.transfer({
-      fromPubkey: publicKeyFromString(from.account),
+      fromPubkey: publicKeyFromString(from.keyPair.publicKey.toString()),
       toPubkey: publicKeyFromString(to),
       lamports: amount * LAMPORTS_PER_SOL,
     })
@@ -77,7 +75,7 @@ const transaction = async (from, to, amount) => {
   const signature = await solanaWeb3.sendAndConfirmTransaction(
     connection,
     transaction,
-    [account]
+    [from.keyPair]
   );
   console.log("SIGNATURE", signature);
 };

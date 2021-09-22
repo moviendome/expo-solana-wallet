@@ -1,4 +1,4 @@
-import React, { memo, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import {
   BackButton,
@@ -18,6 +18,8 @@ import { requestAirDrop } from "../api";
 
 import { useStoreState } from "../hooks/storeHooks";
 
+import { accountFromSeed } from "../utils";
+
 type Props = {
   navigation: Navigation;
 };
@@ -26,6 +28,8 @@ const SettingsScreen = ({ navigation }: Props) => {
   const { colors } = useTheme();
 
   const wallet = useStoreState((state) => state.wallet);
+  const accounts = useStoreState((state) => state.accounts);
+  const [account, setAccount] = useState({});
 
   const [visible, setVisible] = useState(false);
 
@@ -35,10 +39,31 @@ const SettingsScreen = ({ navigation }: Props) => {
 
   const [airdropText, setAirdropText] = useState("");
 
+  useEffect(() => {
+    async function generate() {
+      const currentAccount = accounts[0];
+      setAccount({
+        index: currentAccount.index,
+        title: currentAccount.title,
+        keyPair: accountFromSeed(
+          wallet.seed,
+          currentAccount.index,
+          currentAccount.derivationPath,
+          0
+        ),
+      });
+      // }
+    }
+
+    generate();
+  }, []);
+
   const _requestAirdrop = async () => {
     setAirdropText("Requesting Airdrop...");
     setVisible(true);
-    const signature = await requestAirDrop(wallet.account);
+    const signature = await requestAirDrop(
+      account.keyPair.publicKey.toString()
+    );
     setAirdropText("Airdrop completed!");
   };
 
@@ -70,14 +95,14 @@ const SettingsScreen = ({ navigation }: Props) => {
             )}
           />
           <Card.Content>
-            <Paragraph>Get funds for your Dev Account.</Paragraph>
+            <Paragraph>Get funds for your Default Dev Account.</Paragraph>
           </Card.Content>
         </Card>
       </View>
 
       <Snackbar
         visible={visible}
-        duration={15000}
+        duration={30000}
         onDismiss={onDismissSnackBar}
         action={{
           label: "Close",

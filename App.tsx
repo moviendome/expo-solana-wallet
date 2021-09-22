@@ -2,6 +2,8 @@ import { StatusBar } from "expo-status-bar";
 import React from "react";
 import { StoreProvider } from "easy-peasy";
 
+import "./global";
+
 import "react-native-url-polyfill/auto";
 
 import { Provider as PaperProvider } from "react-native-paper";

@@ -5,7 +5,7 @@ import {
   Header,
   NumberKeyboard,
 } from "../components";
-import { useStoreActions } from "easy-peasy";
+import { useStoreActions } from "../hooks/storeHooks";
 import { Navigation } from "../types";
 
 import { generateMnemonic, mnemonicToSeed, accountFromSeed } from "../utils";
@@ -23,6 +23,11 @@ const SetPinScreen = ({ navigation }: Props) => {
   const [pinOk, setPinOk] = useState(false);
 
   const addWallet = useStoreActions((actions) => actions.addWallet);
+  const addDefaultAccount = useStoreActions(
+    (actions) => actions.addDefaultAccount
+  );
+
+  const addAccount = useStoreActions((actions) => actions.addAccount);
 
   useEffect(() => {
     if (pin.length === 4 && pin1.length === 0) {
@@ -50,13 +55,19 @@ const SetPinScreen = ({ navigation }: Props) => {
     async function generate() {
       const mnemonic = await generateMnemonic();
       const seed = mnemonicToSeed(mnemonic);
-      const account = accountFromSeed(seed);
 
       addWallet({
         passcode: pin.join(""),
-        account: account.publicKey.toBase58(),
         mnemonic: mnemonic,
         seed: seed,
+      });
+
+      addDefaultAccount();
+
+      addAccount({
+        index: 1,
+        title: "Donations",
+        derivationPath: "bip44Change",
       });
     }
 

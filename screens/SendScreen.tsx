@@ -13,6 +13,7 @@ import {
   TextInput,
   useTheme,
   Snackbar,
+  Menu,
 } from "react-native-paper";
 import { Navigation } from "../types";
 
@@ -22,7 +23,7 @@ import { useFocusEffect, useRoute } from "@react-navigation/native";
 
 import { getBalance, getSolanaPrice, transaction } from "../api";
 
-import { maskedAddress } from "../utils";
+import { accountFromSeed, maskedAddress } from "../utils";
 
 type Props = {
   navigation: Navigation;
@@ -32,6 +33,28 @@ const SendScreen = ({ navigation }: Props) => {
   const { colors } = useTheme();
 
   const wallet = useStoreState((state) => state.wallet);
+  const accounts = useStoreState((state) => state.accounts);
+
+  const [account, setAccount] = useState({});
+
+  useEffect(() => {
+    async function generate() {
+      const currentAccount = accounts[0];
+      setAccount({
+        index: currentAccount.index,
+        title: currentAccount.title,
+        keyPair: accountFromSeed(
+          wallet.seed,
+          currentAccount.index,
+          currentAccount.derivationPath,
+          0
+        ),
+      });
+      // }
+    }
+
+    generate();
+  }, []);
 
   const route = useRoute();
 
@@ -57,7 +80,7 @@ const SendScreen = ({ navigation }: Props) => {
   const sendTransaction = async () => {
     setTransferText("Sending transfer...");
     setVisible(true);
-    const tx = await transaction(wallet, toAddress, Number(amount.solana));
+    const tx = await transaction(account, toAddress, Number(amount.solana));
     setTransferText("Transfer completed!");
     setAmount({ solana: 0, usd: 0 });
     setToAddress("");
@@ -71,12 +94,34 @@ const SendScreen = ({ navigation }: Props) => {
 
   useEffect(() => {
     async function getAsync() {
-      setBalance(await getBalance(wallet.account));
-      setSolanaPrice(await getSolanaPrice());
+      if (account?.keyPair?.publicKey?.toString()) {
+        setBalance(await getBalance(account?.keyPair?.publicKey?.toString()));
+        setSolanaPrice(await getSolanaPrice());
+      }
     }
 
     getAsync();
-  }, []);
+  }, [account]);
+
+  // Menu
+  const [menuVisible, setMenuVisible] = useState(false);
+  const openMenu = () => setMenuVisible(true);
+  const closeMenu = () => setMenuVisible(false);
+
+  const changeAccount = (index: number) => {
+    const currentAccount = accounts[index];
+    setAccount({
+      index: currentAccount.index,
+      title: currentAccount.title,
+      keyPair: accountFromSeed(
+        wallet.seed,
+        currentAccount.index,
+        currentAccount.derivationPath,
+        0
+      ),
+    });
+    closeMenu();
+  };
 
   return (
     <Background>
@@ -85,9 +130,26 @@ const SendScreen = ({ navigation }: Props) => {
         <View style={styles.block}>
           <Title>From</Title>
 
+          <Menu
+            visible={menuVisible}
+            onDismiss={closeMenu}
+            anchor={
+              <Button onPress={openMenu}>{`${account?.title} address`}</Button>
+            }
+          >
+            {accounts.map((account) => (
+              <Menu.Item
+                key={account.index}
+                onPress={() => changeAccount(account.index)}
+                title={account.title}
+                titleStyle={{ color: colors.primary }}
+              />
+            ))}
+          </Menu>
+
           <Card style={styles.card} onPress={() => console.log("copy")}>
             <Card.Title
-              title={maskedAddress(wallet.account)}
+              title={maskedAddress(account?.keyPair?.publicKey?.toString())}
               left={(props) => <Avatar.Icon {...props} icon="wallet" />}
             />
           </Card>

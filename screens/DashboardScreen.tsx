@@ -1,12 +1,13 @@
 import React, { useEffect, useCallback, useState } from "react";
 import { StyleSheet, View } from "react-native";
-import { Background2 as Background, Title, PriceHeader } from "../components";
-import { Avatar, Card, useTheme } from "react-native-paper";
+import { Background2 as Background, PriceHeader, Button } from "../components";
+import { Avatar, Card, Menu, useTheme } from "react-native-paper";
 import { Navigation } from "../types";
 import { useFocusEffect } from "@react-navigation/native";
 
 import { useStoreState } from "../hooks/storeHooks";
 
+import { accountFromSeed } from "../utils";
 import { getBalance, getHistory, getSolanaPrice } from "../api";
 
 type Props = {
@@ -19,6 +20,28 @@ const DashboardScreen = ({ navigation }: Props) => {
   const { colors } = useTheme();
 
   const wallet = useStoreState((state) => state.wallet);
+  const accounts = useStoreState((state) => state.accounts);
+
+  const [account, setAccount] = useState({});
+
+  useEffect(() => {
+    async function generate() {
+      const currentAccount = accounts[0];
+      setAccount({
+        index: currentAccount.index,
+        title: currentAccount.title,
+        keyPair: accountFromSeed(
+          wallet.seed,
+          currentAccount.index,
+          currentAccount.derivationPath,
+          0
+        ),
+      });
+      // }
+    }
+
+    generate();
+  }, []);
 
   const [balance, setBalance] = useState({
     usd: 0.0,
@@ -30,17 +53,19 @@ const DashboardScreen = ({ navigation }: Props) => {
   useFocusEffect(
     useCallback(() => {
       async function getAsyncBalance() {
-        const sol = await getBalance(wallet.account);
-        const usdPrice = await getSolanaPrice();
+        if (account?.keyPair?.publicKey?.toString()) {
+          const sol = await getBalance(account.keyPair.publicKey.toString());
+          const usdPrice = await getSolanaPrice();
 
-        setBalance({
-          sol,
-          usd: (sol * usdPrice).toFixed(2),
-        });
+          setBalance({
+            sol,
+            usd: (sol * usdPrice).toFixed(2),
+          });
+        }
       }
 
       getAsyncBalance();
-    }, [])
+    }, [account])
   );
 
   // useEffect(() => {
@@ -52,19 +77,56 @@ const DashboardScreen = ({ navigation }: Props) => {
   //   generate();
   // }, []);
 
+  // console.log(account.keyPair.publicKey.toString());
+
+  // Menu
+  const [visible, setVisible] = React.useState(false);
+  const openMenu = () => setVisible(true);
+  const closeMenu = () => setVisible(false);
+
+  const changeAccount = (index: number) => {
+    const currentAccount = accounts[index];
+    setAccount({
+      index: currentAccount.index,
+      title: currentAccount.title,
+      keyPair: accountFromSeed(
+        wallet.seed,
+        currentAccount.index,
+        currentAccount.derivationPath,
+        0
+      ),
+    });
+    closeMenu();
+  };
+
   return (
     <Background navigation={navigation}>
       <PriceHeader usd={balance.usd} sol={balance.sol} />
 
       <View style={styles.container}>
-        <Title>Wallet Address</Title>
+        <Menu
+          visible={visible}
+          onDismiss={closeMenu}
+          anchor={
+            <Button onPress={openMenu}>{`${account?.title} address`}</Button>
+          }
+        >
+          {accounts.map((account) => (
+            <Menu.Item
+              key={account.index}
+              onPress={() => changeAccount(account.index)}
+              title={account.title}
+              titleStyle={{ color: colors.primary }}
+            />
+          ))}
+        </Menu>
 
         <Card
           style={styles.card}
           onPress={() => navigation.navigate("Receive")}
         >
           <Card.Title
-            title={maskedAddress(wallet.account)}
+            title={maskedAddress(account?.keyPair?.publicKey?.toString())}
             left={(props) => <Avatar.Icon {...props} icon="qrcode" />}
           />
         </Card>
