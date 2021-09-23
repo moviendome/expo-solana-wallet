@@ -16,9 +16,10 @@ const generateMnemonic = async () => {
   return mnemonic;
 };
 
-const mnemonicToSeed = (mnemonic: string) => {
-  const seed = ethers.utils.mnemonicToSeed(mnemonic);
-  return seed;
+const mnemonicToSeed = async (mnemonic: string) => {
+  const bip39 = await import("bip39");
+  const seed = await bip39.mnemonicToSeed(mnemonic);
+  return Buffer.from(seed).toString("hex");
 };
 
 const accountFromSeed = (
@@ -49,7 +50,7 @@ const deriveSeed = (
   accountIndex: number
 ): Buffer | undefined => {
   const path44Change = `m/44'/501'/${walletIndex}'/0'`;
-  return ed25519.derivePath(path44Change, seed).key;
+  return ed25519.derivePath(path44Change, Buffer.from(seed, "hex")).key;
 };
 
 export {

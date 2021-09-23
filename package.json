@@ -20,6 +20,7 @@
     "@react-navigation/native-stack": "^6.1.0",
     "@solana/web3.js": "^1.24.1",
     "assert": "^2.0.0",
+    "bip39": "^3.0.4",
     "buffer": "^6.0.3",
     "easy-peasy": "^5.0.3",
     "ed25519-hd-key": "^1.2.0",

@@ -54,7 +54,7 @@ const SetPinScreen = ({ navigation }: Props) => {
   useEffect(() => {
     async function generate() {
       const mnemonic = await generateMnemonic();
-      const seed = mnemonicToSeed(mnemonic);
+      const seed = await mnemonicToSeed(mnemonic);
 
       addWallet({
         passcode: pin.join(""),

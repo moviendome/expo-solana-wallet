@@ -37,7 +37,6 @@ const DashboardScreen = ({ navigation }: Props) => {
           0
         ),
       });
-      // }
     }
 
     generate();
@@ -63,7 +62,6 @@ const DashboardScreen = ({ navigation }: Props) => {
           });
         }
       }
-
       getAsyncBalance();
     }, [account])
   );
