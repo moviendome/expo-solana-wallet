@@ -1,6 +1,12 @@
 import React, { useEffect, useCallback, useState } from "react";
 import { StyleSheet, View } from "react-native";
-import { Background2 as Background, PriceHeader, Button } from "../components";
+import {
+  Background2 as Background,
+  PriceHeader,
+  Button,
+  Title,
+  Paragraph,
+} from "../components";
 import { Avatar, Card, Menu, useTheme } from "react-native-paper";
 import { Navigation } from "../types";
 import { useFocusEffect } from "@react-navigation/native";
@@ -8,7 +14,13 @@ import { useFocusEffect } from "@react-navigation/native";
 import { useStoreState } from "../hooks/storeHooks";
 
 import { accountFromSeed } from "../utils";
-import { getBalance, getHistory, getSolanaPrice } from "../api";
+import {
+  SPL_TOKEN,
+  getBalance,
+  getHistory,
+  getSolanaPrice,
+  getTokenBalance,
+} from "../api";
 
 type Props = {
   navigation: Navigation;
@@ -97,6 +109,22 @@ const DashboardScreen = ({ navigation }: Props) => {
     closeMenu();
   };
 
+  const [tokenBalance, setTokenBalance] = useState(0);
+
+  useEffect(() => {
+    async function getBalance() {
+      const balance = await getTokenBalance(
+        account.keyPair.publicKey.toString(),
+        SPL_TOKEN
+      );
+      setTokenBalance(balance);
+    }
+
+    if (Object.keys(account).length > 0) {
+      getBalance();
+    }
+  }, [account]);
+
   return (
     <Background navigation={navigation}>
       <PriceHeader usd={balance.usd} sol={balance.sol} />
@@ -128,6 +156,9 @@ const DashboardScreen = ({ navigation }: Props) => {
             left={(props) => <Avatar.Icon {...props} icon="qrcode" />}
           />
         </Card>
+
+        <Title>My SPL Token</Title>
+        <Paragraph>{`Balance: ${tokenBalance}`}</Paragraph>
       </View>
 
       {/*

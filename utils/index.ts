@@ -35,7 +35,9 @@ const accountFromSeed = (
     accountIndex
   );
   const keyPair = nacl.sign.keyPair.fromSeed(derivedSeed);
-  return new solanaWeb3.Account(keyPair.secretKey);
+
+  const acc = new solanaWeb3.Keypair(keyPair);
+  return acc;
 };
 
 const maskedAddress = (address: string) => {
