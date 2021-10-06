@@ -5,6 +5,7 @@ import * as React from "react";
 import { useStoreState } from "../hooks/storeHooks";
 
 import {
+  DashScreen,
   OnboardingScreen,
   SetPinScreen,
   DashboardScreen,
@@ -66,6 +67,11 @@ function RootNavigator() {
   } else {
     return (
       <Stack.Navigator>
+        <Stack.Screen
+          name="Dash"
+          component={DashScreen}
+          options={{ headerShown: false }}
+        />
         <Stack.Screen
           name="Onboarding"
           component={OnboardingScreen}
