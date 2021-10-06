@@ -34,6 +34,12 @@ const getHistory = async (publicKeyString, options = { limit: 20 }) => {
   return history;
 };
 
+const getConfirmedTransaction = async (signature: string) => {
+  const connection = createConnection();
+  const transaction = await connection.getParsedConfirmedTransaction(signature);
+  return transaction;
+};
+
 const getSolanaPrice = async () => {
   const response = await fetch(
     `https://api.coingecko.com/api/v3/simple/price?ids=solana&vs_currencies=usd`,
@@ -64,24 +70,25 @@ const publicKeyFromString = (publicKeyString: string) => {
 
 const transaction = async (from, to, amount) => {
   console.log("Executing transaction...");
-  console.log(amount);
+  // console.log(amount);
 
   const transaction = new solanaWeb3.Transaction().add(
     solanaWeb3.SystemProgram.transfer({
-      fromPubkey: publicKeyFromString(from.keyPair.publicKey.toString()),
+      fromPubkey: publicKeyFromString(from.publicKey.toString()),
       toPubkey: publicKeyFromString(to),
       lamports: amount * LAMPORTS_PER_SOL,
     })
   );
 
-  // Sign transaction, broadcast, and confirm
+  // // Sign transaction, broadcast, and confirm
   const connection = createConnection();
   const signature = await solanaWeb3.sendAndConfirmTransaction(
     connection,
     transaction,
-    [from.keyPair]
+    [from]
   );
-  console.log("SIGNATURE", signature);
+
+  return signature;
 };
 
 const SPL_ASSOCIATED_TOKEN_ACCOUNT_PROGRAM_ID: PublicKey = new PublicKey(
@@ -127,6 +134,7 @@ export {
   SPL_TOKEN,
   createConnection,
   getBalance,
+  getConfirmedTransaction,
   getHistory,
   getSolanaPrice,
   publicKeyFromString,

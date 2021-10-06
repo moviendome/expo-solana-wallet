@@ -36,10 +36,7 @@ const store = createStore<WalletModel>(
     {
       wallet: generic({}),
       accounts: [],
-      hasWallet: computed(
-        (state) =>
-          Object.keys(state.wallet).length !== 0 && state.accounts.length !== 0
-      ),
+      hasWallet: computed((state) => Object.keys(state.wallet).length > 0),
       addWallet: action((state, payload) => {
         state.wallet = {
           passcode: payload.passcode,
@@ -55,9 +52,13 @@ const store = createStore<WalletModel>(
         });
       }),
       addAccount: action((state, payload) => {
+        const colors = ["#0e9ca5", "#dc1fff"];
+        const nextIndex =
+          state.accounts.length === 0 ? 0 : [...state.accounts].pop().index + 1;
         state.accounts.push({
-          index: payload.index,
-          title: payload.title,
+          index: nextIndex,
+          label: payload.label,
+          color: colors[nextIndex],
           derivationPath: "bip44Change",
         });
       }),

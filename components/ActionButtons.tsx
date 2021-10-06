@@ -1,5 +1,5 @@
-import React, { memo } from "react";
-import { StyleSheet, View } from "react-native";
+import * as React from "react";
+import { StyleSheet, Text, View } from "react-native";
 
 import tw from "../lib/tailwind";
 import { useDeviceContext } from "twrnc";
@@ -8,7 +8,7 @@ type Props = {
   children: React.ReactNode;
 };
 
-const Header = ({ children }: Props) => {
+const ActionButtons = ({ children }: Props) => {
   useDeviceContext(tw);
 
   return <View style={styles.container}>{children}</View>;
@@ -16,8 +16,8 @@ const Header = ({ children }: Props) => {
 
 const styles = StyleSheet.create({
   container: {
-    ...tw`w-full flex-row  mb-4 justify-between`,
+    ...tw`w-full flex-row justify-between p-4 bg-white`,
   },
 });
 
-export default memo(Header);
+export default ActionButtons;

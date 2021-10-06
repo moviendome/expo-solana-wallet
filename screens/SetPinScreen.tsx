@@ -62,13 +62,13 @@ const SetPinScreen = ({ navigation }: Props) => {
         seed: seed,
       });
 
-      addDefaultAccount();
+      // addDefaultAccount();
 
-      addAccount({
-        index: 1,
-        title: "Donations",
-        derivationPath: "bip44Change",
-      });
+      // addAccount({
+      //   index: 1,
+      //   title: "Donations",
+      //   derivationPath: "bip44Change",
+      // });
     }
 
     if (pinOk) {
@@ -78,8 +78,10 @@ const SetPinScreen = ({ navigation }: Props) => {
 
   return (
     <Background noMenu skipHeader>
+      {/*
       <BackButton goBack={() => navigation.navigate("Onboarding")} />
       <Header>{pinMessage}</Header>
+         */}
 
       <NumberKeyboard onPress={_onPressNumber} pin={pin} />
     </Background>

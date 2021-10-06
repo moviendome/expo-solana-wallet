@@ -1,14 +1,10 @@
-import React, { memo } from "react";
+import * as React from "react";
 import { StyleSheet, View } from "react-native";
 
 import tw from "../lib/tailwind";
 import { useDeviceContext } from "twrnc";
 
-type Props = {
-  children: React.ReactNode;
-};
-
-const Header = ({ children }: Props) => {
+const Container = ({ children }) => {
   useDeviceContext(tw);
 
   return <View style={styles.container}>{children}</View>;
@@ -16,8 +12,8 @@ const Header = ({ children }: Props) => {
 
 const styles = StyleSheet.create({
   container: {
-    ...tw`w-full flex-row  mb-4 justify-between`,
+    ...tw`flex-1 w-full bg-white items-center pt-8`,
   },
 });
 
-export default memo(Header);
+export default Container;

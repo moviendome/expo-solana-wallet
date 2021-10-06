@@ -6,6 +6,7 @@ import { useStoreState } from "../hooks/storeHooks";
 
 import {
   DashScreen,
+  AccountScreen,
   OnboardingScreen,
   SetPinScreen,
   DashboardScreen,
@@ -33,33 +34,13 @@ function RootNavigator() {
     return (
       <Stack.Navigator>
         <Stack.Screen
-          name="Dashboard"
-          component={DashboardScreen}
+          name="Account"
+          component={AccountScreen}
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name="Receive"
-          component={ReceiveScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="Send"
-          component={SendScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="Settings"
-          component={SettingsScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="Backup"
-          component={BackupScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="QR"
-          component={QRScannerScreen}
+          name="Dash"
+          component={DashScreen}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
@@ -68,16 +49,6 @@ function RootNavigator() {
     return (
       <Stack.Navigator>
         <Stack.Screen
-          name="Dash"
-          component={DashScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="Onboarding"
-          component={OnboardingScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
           name="Set Pin"
           component={SetPinScreen}
           options={{ headerShown: false }}
@@ -85,4 +56,60 @@ function RootNavigator() {
       </Stack.Navigator>
     );
   }
+
+  //   return (
+  //     <Stack.Navigator>
+  //       <Stack.Screen
+  //         name="Dashboard"
+  //         component={DashboardScreen}
+  //         options={{ headerShown: false }}
+  //       />
+  //       <Stack.Screen
+  //         name="Receive"
+  //         component={ReceiveScreen}
+  //         options={{ headerShown: false }}
+  //       />
+  //       <Stack.Screen
+  //         name="Send"
+  //         component={SendScreen}
+  //         options={{ headerShown: false }}
+  //       />
+  //       <Stack.Screen
+  //         name="Settings"
+  //         component={SettingsScreen}
+  //         options={{ headerShown: false }}
+  //       />
+  //       <Stack.Screen
+  //         name="Backup"
+  //         component={BackupScreen}
+  //         options={{ headerShown: false }}
+  //       />
+  //       <Stack.Screen
+  //         name="QR"
+  //         component={QRScannerScreen}
+  //         options={{ headerShown: false }}
+  //       />
+  //     </Stack.Navigator>
+  //   );
+  // } else {
+  //   return (
+  //     <Stack.Navigator>
+  //       <Stack.Screen
+  //         name="Dash"
+  //         component={DashScreen}
+  //         options={{ headerShown: false }}
+  //       />
+  //       <Stack.Screen
+  //         name="Onboarding"
+  //         component={OnboardingScreen}
+  //         options={{ headerShown: false }}
+  //       />
+  //       <Stack.Screen
+  //         name="Set Pin"
+  //         component={SetPinScreen}
+  //         options={{ headerShown: false }}
+  //       />
+  //     </Stack.Navigator>
+  //   );
+  // }
 }

@@ -1,6 +1,12 @@
 import React, { memo } from "react";
-import { TouchableOpacity, Image, StyleSheet } from "react-native";
+import { TouchableOpacity, Image, Text, StyleSheet } from "react-native";
+
 import { getStatusBarHeight } from "react-native-status-bar-height";
+
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+
+import tw from "../lib/tailwind";
+import { useDeviceContext } from "twrnc";
 
 type Props = {
   goBack: () => void;
@@ -8,22 +14,17 @@ type Props = {
 
 const BackButton = ({ goBack }: Props) => (
   <TouchableOpacity onPress={goBack} style={styles.container}>
-    <Image
-      style={styles.image}
-      source={require("../assets/images/arrow_back.png")}
-    />
+    <MaterialCommunityIcons name="chevron-left" size={24} color="black" />
+    <Text style={styles.text}>Account</Text>
   </TouchableOpacity>
 );
 
 const styles = StyleSheet.create({
   container: {
-    position: "absolute",
-    top: 40 + getStatusBarHeight(),
-    left: 10,
+    ...tw`w-full flex-row items-center p-4`,
   },
-  image: {
-    width: 24,
-    height: 24,
+  text: {
+    ...tw`text-lg font-bold`,
   },
 });
 
