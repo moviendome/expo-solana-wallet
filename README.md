@@ -259,3 +259,5 @@ $ cd expo-solana-wallet
 $ yarn install
 $ expo web or expo start
 ~~~
+
+Or install apk for Android from [Expo](https://exp-shell-app-assets.s3.us-west-1.amazonaws.com/android/%40moviendome/wallet-f98978804d7345ce89d4aac7046449de-signed.apk)
