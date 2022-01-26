@@ -121,7 +121,7 @@ const DashboardScreen = ({ navigation }: Props) => {
     }
 
     if (Object.keys(account).length > 0) {
-      getBalance();
+      // getBalance();
     }
   }, [account]);
 
@@ -157,8 +157,10 @@ const DashboardScreen = ({ navigation }: Props) => {
           />
         </Card>
 
+        { /*
         <Title>My SPL Token</Title>
         <Paragraph>{`Balance: ${tokenBalance}`}</Paragraph>
+       */ }
       </View>
 
       {/*
