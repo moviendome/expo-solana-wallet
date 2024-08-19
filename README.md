@@ -8,7 +8,9 @@ This is a simple Solana Wallet Cross-Platform App built with Expo, Web3 & React 
 
 This screen only shows a button to start!
 
-![Welcome](https://moviendo.me/building-a-solana-wallet-cross-platform-app-with-expo-web3-and-react-native/welcome-1e53e78c.png)
+![Welcome](https://moviendo.me/building-a-solana-wallet-cross-platform-app-with-expo-web3-and-react-native/welcome.png)
+
+
 
 
 ### Create your passcode
@@ -18,7 +20,7 @@ This screen let you create a passcode that for now is only requested when you wa
 Later, it can be used to encrypt the seed, before doing a transfer or even to access to the full app.
 
 
-![Passcode](https://moviendo.me/building-a-solana-wallet-cross-platform-app-with-expo-web3-and-react-native/passcode-085e77c7.png)
+![Passcode](https://moviendo.me/building-a-solana-wallet-cross-platform-app-with-expo-web3-and-react-native/passcode.png)
 
 
 ### Dashboard
@@ -28,7 +30,7 @@ This screen shows the account balance and soon it will show the Activity of the 
 Also, it is where I placed the Navigation using a floating action button (component provided by [React Native Paper](https://callstack.github.io/react-native-paper/fab-group.html))
 
 
-![Dashboard](https://moviendo.me/building-a-solana-wallet-cross-platform-app-with-expo-web3-and-react-native/dashboard-3355a428.png)
+![Dashboard](https://moviendo.me/building-a-solana-wallet-cross-platform-app-with-expo-web3-and-react-native/dashboard.png)
 
 
 Get account balance with web3:
@@ -52,7 +54,7 @@ const getBalance = async (publicKey) => {
 This screen shows the address and a qr to make easier receive tokens.
 
 
-![Receive](https://moviendo.me/building-a-solana-wallet-cross-platform-app-with-expo-web3-and-react-native/receive-f0315e76.png)
+![Receive](https://moviendo.me/building-a-solana-wallet-cross-platform-app-with-expo-web3-and-react-native/receive.png)
 
 
 ### Send
@@ -63,7 +65,7 @@ Also, this screen shows the current price of SOL, SOL available in the account a
 
 Validations are pending!
 
-![Send](https://moviendo.me/building-a-solana-wallet-cross-platform-app-with-expo-web3-and-react-native/send-43b69182.png)
+![Send](https://moviendo.me/building-a-solana-wallet-cross-platform-app-with-expo-web3-and-react-native/send.png)
 
 Create transaction with web3:
 
@@ -115,7 +117,7 @@ const getSolanaPrice = async () => {
 
 This screen shows two options:
 
-![Settings](https://moviendo.me/building-a-solana-wallet-cross-platform-app-with-expo-web3-and-react-native/settings-c2f36be5.png)
+![Settings](https://moviendo.me/building-a-solana-wallet-cross-platform-app-with-expo-web3-and-react-native/settings.png)
 
 #### Backup
 
